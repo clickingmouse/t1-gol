@@ -13,6 +13,7 @@ type Pool struct {
 	Clients    map[*Client]bool
 	Broadcast  chan Message
 	Timer      chan *time.Ticker
+	GameHandle *gol.GameHandle
 }
 
 func NewPool() *Pool {
