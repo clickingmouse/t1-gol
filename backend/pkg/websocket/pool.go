@@ -22,6 +22,7 @@ func NewPool() *Pool {
 		Unregister: make(chan *Client),
 		Clients:    make(map[*Client]bool),
 		Broadcast:  make(chan Message),
+		GameHandle: gol.InitNewGame(7, 9),
 	}
 }
 
@@ -36,7 +37,9 @@ func (pool *Pool) Start() {
 				//client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined..."})
 				// test messages
 				client.Conn.WriteJSON(gol.NewUserMessage)
-				client.Conn.WriteJSON(gol.ChatTestMessage)
+				//client.Conn.WriteJSON(gol.ChatTestMessage)
+				//client.Conn.WriteJSON(gol.PColorTestMessage)
+				//client.Conn.WriteJSON(gol.GolGameTestMessage)
 			}
 			break
 		case client := <-pool.Unregister:

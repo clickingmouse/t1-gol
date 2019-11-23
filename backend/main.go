@@ -33,7 +33,9 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 
 func setupRoutes() {
 	//http.HandleFunc("/ws", serveWs)
+	// TODO: add gol game initialization inside newPool
 	pool := websocket.NewPool()
+	fmt.Printf("%+v", pool.GameHandle)
 	go pool.Start()
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
