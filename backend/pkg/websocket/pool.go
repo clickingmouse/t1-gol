@@ -1,6 +1,7 @@
 package websocket
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -32,6 +33,15 @@ func (pool *Pool) Start() {
 		case client := <-pool.Register:
 			pool.Clients[client] = true
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients))
+			// push random color to client
+			//create new message obj
+			var RandomColorMessage = gol.GolMessage{GolMsgType: "playerColor", Payload: gol.GetRandomColor()}
+			nPC, err := json.Marshal(&RandomColorMessage)
+			if err != nil {
+				panic(err)
+			}
+			(*client).Conn.WriteJSON(Message{Type: 1, Body: string(nPC)})
+
 			for client, _ := range pool.Clients {
 				fmt.Println(client)
 				//client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined..."})
