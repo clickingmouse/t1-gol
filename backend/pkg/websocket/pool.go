@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/clickingmouse/t1/gol/pkg/gol"
 )
@@ -11,6 +12,7 @@ type Pool struct {
 	Unregister chan *Client
 	Clients    map[*Client]bool
 	Broadcast  chan Message
+	Timer      chan *time.Ticker
 }
 
 func NewPool() *Pool {
