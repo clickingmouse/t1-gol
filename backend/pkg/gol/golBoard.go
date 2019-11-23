@@ -1,5 +1,7 @@
 package gol
 
+import "fmt"
+
 // CreateNewBoard creates a new board with r X c dimension
 func CreateNewBoard(r, c int) *[][]Cell {
 	a := make([]Cell, c*r)
@@ -26,4 +28,56 @@ func InitBoard(b *[][]Cell) *[][]Cell {
 		}
 	}
 	return b
+}
+
+//boardWriteTEST
+func BoardWriteTest(b *[][]Cell, writeBit bool) {
+
+	for i := range *b {
+		for j := range *b {
+			(*b)[i][j].X = i
+			(*b)[i][j].Y = j
+			// WRITE 1
+			(*b)[i][j].Alive = writeBit
+			(*b)[i][j].PreviousLife = writeBit
+
+		}
+
+	}
+	//	return 1
+}
+
+//BoardClearAll to be used as a reset function
+func BoardClearAll(b *[][]Cell, writeBit bool) {
+
+	for i := range *b {
+		for j := range *b {
+			(*b)[i][j].X = i
+			(*b)[i][j].Y = j
+			// WRITE 1
+			// (*b)[i][j].ThisGen = "#ffffff"
+			// (*b)[i][j].NextGen = "#ffffff"
+			// (*b)[i][j].Now = false
+			// (*b)[i][j].Next = false
+		}
+
+	}
+}
+
+// TestBoard func
+func TestBoard(size int, b *[][]Cell) int {
+	sum := 0
+	for i := range *b {
+		for j := range *b {
+			(*b)[i][j].X = i
+			(*b)[i][j].Y = j
+			// in case we start a new game usage
+			fmt.Println("checking ", i, j)
+			if (*b)[i][j].Alive == true && (*b)[i][j].PreviousLife == true {
+				sum++
+			}
+		}
+
+	}
+	return sum
 }

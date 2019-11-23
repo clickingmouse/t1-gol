@@ -53,6 +53,14 @@ func (pool *Pool) Start() {
 				//client.Conn.WriteJSON(gol.ChatTestMessage)
 				//client.Conn.WriteJSON(gol.PColorTestMessage)
 				//client.Conn.WriteJSON(gol.GolGameTestMessage)
+
+				// send Game & more importantly, game board
+				pGH, err := json.Marshal(*pool.GameHandle)
+				if err != nil {
+					panic(err)
+				}
+				gBoardMessage := gol.NewMsg("GOLGAME", string(pGH))
+				client.Conn.WriteJSON(gBoardMessage)
 			}
 			break
 		case client := <-pool.Unregister:
