@@ -1,12 +1,15 @@
 import React from "react";
+
 //import logo from "./logo.svg";
 //import "./App.css";
+import Header from "./components/Header";
+import GolAppPanel from "./components/GOL/GolAppPanel";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">Game of Life</header>
-      GOL
+      <Header />
+      <GolAppPanel />
       <hr />
     </div>
   );
