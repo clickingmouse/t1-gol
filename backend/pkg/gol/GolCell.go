@@ -14,3 +14,9 @@ type Cell struct {
 	// NextGen      string
 	// Retired      bool
 }
+
+// for insert dummydatafunc
+func (c *Cell) Breed(color string) {
+	c.Alive = true
+	c.ColorHex = color
+}

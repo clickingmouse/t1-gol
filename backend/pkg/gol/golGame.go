@@ -15,6 +15,8 @@ func InitNewGame(r, c int) *GameHandle {
 	gHandle := &GameHandle{}
 	//gHandle.MessageType = "GOLGAME"
 	gHandle.Board = CreateNewBoard(r, c)
+	gHandle.Board = InitBoard(gHandle.Board)
+
 	//should add err checking too
 	id, err := uuid.NewUUID()
 	if err != nil {
