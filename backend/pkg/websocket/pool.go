@@ -49,7 +49,15 @@ func (pool *Pool) Start() {
 				fmt.Println(client)
 				//client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined..."})
 				// test messages
-				client.Conn.WriteJSON(gol.NewUserMessage)
+
+				//var NewUserMessage = GolMessage{GolMsgType: "chat", Payload: "New User Joined"}
+				nUsrMsg, err := json.Marshal(&gol.NewUserMessage)
+				if err != nil {
+					panic(err)
+				}
+				(*client).Conn.WriteJSON(Message{Type: 1, Body: string(nUsrMsg)})
+
+				//client.Conn.WriteJSON(gol.NewUserMessage)
 				//client.Conn.WriteJSON(gol.ChatTestMessage)
 				//client.Conn.WriteJSON(gol.PColorTestMessage)
 				//client.Conn.WriteJSON(gol.GolGameTestMessage)
@@ -59,8 +67,18 @@ func (pool *Pool) Start() {
 				if err != nil {
 					panic(err)
 				}
-				gBoardMessage := gol.NewMsg("GOLGAME", string(pGH))
-				client.Conn.WriteJSON(gBoardMessage)
+				//gBoardMessage := gol.NewMsg("GOLGAME", string(pGH))
+				//client.Conn.WriteJSON(gBoardMessage)
+				//-(*client).Conn.WriteJSON(Message{Type: 1, Body: string(pGH)})
+
+				//////////////////////////////////////////////////////////////////
+				var boardStatusMsg = gol.GolMessage{GolMsgType: "GOLGAME", Payload: string(pGH)}
+				bStatus, err := json.Marshal(&boardStatusMsg)
+				if err != nil {
+					panic(err)
+				}
+				(*client).Conn.WriteJSON(Message{Type: 1, Body: string(bStatus)})
+
 			}
 			break
 		case client := <-pool.Unregister:

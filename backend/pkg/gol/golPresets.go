@@ -8,5 +8,4 @@ func InsertDummyData(b *[][]Cell) {
 	(*b)[2][2].Breed("#ff0000")
 	(*b)[3][3].Breed("#ff0000")
 	(*b)[4][4].Breed("#ff0000")
-
 }

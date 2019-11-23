@@ -5,21 +5,22 @@ import ChatHistory from "./GolChat/ChatHistory";
 import ChatInput from "./GolChat/ChatInput";
 import { Container, Row, Col } from "react-bootstrap";
 import { connect, sendMsg } from "../../api";
-
-function golMsgReducer(state, [type, payload]) {
+// dispatch([body.golMsgType, body]);
+function golMsgReducer(state, [type, body]) {
   // console.log("REDUCER", type);
   // console.log("REDUCER-PAYLOAD", payload);
-  let p = JSON.parse(payload.body);
-
+  //let p = JSON.parse(payload.body);
+  let p = { msgType: type };
+  //let p = payload;
   switch (p.msgType) {
     case "playerColor": {
       return Object.assign({}, state, {
         pending: state.pending,
-        playerColor: p.colorHex,
+        playerColor: body.payload,
         messageHistory: {
           chat: state.messageHistory.chat,
           game: state.messageHistory.game,
-          allHistory: [...state.messageHistory.allHistory, payload]
+          allHistory: [...state.messageHistory.allHistory, body.payload]
         }
       });
     }
@@ -28,9 +29,9 @@ function golMsgReducer(state, [type, payload]) {
         pending: state.pending,
         playerColor: state.playerColor,
         messageHistory: {
-          chat: [...state.messageHistory.chat, p],
+          chat: [...state.messageHistory.chat, body.payload],
           game: [...state.messageHistory.game],
-          allHistory: [...state.messageHistory.allHistory, payload]
+          allHistory: [...state.messageHistory.allHistory, body.payload]
         }
       });
     case "GOLGAME": {
@@ -40,8 +41,8 @@ function golMsgReducer(state, [type, payload]) {
         playerColor: state.playerColor,
         messageHistory: {
           chat: [...state.messageHistory.chat],
-          game: [...state.messageHistory.game, p],
-          allHistory: [...state.messageHistory.allHistory, payload]
+          game: [...state.messageHistory.game, body.payload],
+          allHistory: [...state.messageHistory.allHistory, body.payload]
         }
       });
     }
@@ -63,32 +64,52 @@ export default function GolAppPanel() {
   const [state, dispatch] = useReducer(golMsgReducer, initialMsgState);
   useEffect(() => {
     connect(msg => {
-      console.log("New Message");
-      console.log("received data:", typeof msg.data, msg.data);
+      //console.log("New Message");
+      //console.log("received data:", typeof msg.data, msg.data);
       let packet = JSON.parse(msg.data);
-      console.log("packet ->", packet);
-      //dispatch([packet.type, packet]);
+      //console.log("packet ->", packet.golMsgType, packet);
+      //console.log("body ->", typeof packet.body, packet.body);
+      let body = JSON.parse(packet.body);
+      //console.log(typeof payload, payload.golMsgType);
+
+      //      dispatch([packet.golMsgType, packet]);
+      dispatch([body.golMsgType, body]);
     });
-  });
+  }, []);
 
   //  connect();
   function send() {
     console.log("hello");
     sendMsg("hello");
   }
+
+  //   <GolBoard
+  //   gameHistory={state.messageHistory.game}
+  //   myColor={state.playerColor}
+  // />
+  console.log("STATE", state);
+
   return (
     <div>
       <Container>
-        GOL MAIN Panel
+        GOL MAIN Panel log::{state.messageHistory.allHistory.length}
         <hr />
         <button onClick={send}>Hit</button>
         <GolInput />
         <Row>
           <Col sm={7}>
-            <GolBoard />
+            {state.messageHistory.game.length >= 1 ? (
+              <GolBoard
+                gameHistory={state.messageHistory.game}
+                myColor={state.playerColor}
+              />
+            ) : null}
           </Col>
           <Col sm={5}>
-            <ChatHistory />
+            <ChatHistory
+              chatHistory={state.messageHistory.chat}
+              header={"Chat Only"}
+            />
             <ChatInput />
           </Col>
         </Row>
