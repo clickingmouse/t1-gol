@@ -9,23 +9,27 @@ import (
 )
 
 type Pool struct {
-	Register   chan *Client
-	Unregister chan *Client
-	Clients    map[*Client]bool
-	Broadcast  chan Message
-	Timer      chan *time.Ticker
-	GameHandle *gol.GameHandle
+	Register    chan *Client
+	Unregister  chan *Client
+	Clients     map[*Client]bool
+	Broadcast   chan Message
+	UpdateBoard chan *gol.GameHandle
+	Timer       chan *time.Ticker
+	GameHandle  *gol.GameHandle
 }
 
 func NewPool() *Pool {
 	return &Pool{
-		Register:   make(chan *Client),
-		Unregister: make(chan *Client),
-		Clients:    make(map[*Client]bool),
-		Broadcast:  make(chan Message),
-		GameHandle: gol.InitNewGame(7, 9),
+		Register:    make(chan *Client),
+		Unregister:  make(chan *Client),
+		Clients:     make(map[*Client]bool),
+		Broadcast:   make(chan Message),
+		UpdateBoard: make(chan *gol.GameHandle),
+		GameHandle:  gol.InitNewGame(10, 5),
 	}
 }
+
+//4ref; func InitNewGame(r, c int) so  7 rows, 9 cols
 
 func (pool *Pool) Start() {
 	// non empty board for frontend testing
@@ -97,6 +101,21 @@ func (pool *Pool) Start() {
 					return
 				}
 			}
+		case updateBoard := <-pool.UpdateBoard:
+			fmt.Println("Updating board to all clients in Pool %+v\n", updateBoard)
+			for client, _ := range pool.Clients {
+				pGH, err := json.Marshal(*pool.GameHandle)
+				if err != nil {
+					panic(err)
+				}
+				var boardStatusMsg = gol.GolMessage{GolMsgType: "GOLGAME", Payload: string(pGH)}
+				bStatus, err := json.Marshal(&boardStatusMsg)
+				if err != nil {
+					panic(err)
+				}
+				(*client).Conn.WriteJSON(Message{Type: 1, Body: string(bStatus)})
+			}
+			break
 		}
 	}
 }

@@ -1,9 +1,11 @@
 package websocket
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
+	"github.com/clickingmouse/t1/gol/pkg/gol"
 	"github.com/gorilla/websocket"
 )
 
@@ -31,7 +33,19 @@ func (c *Client) Read() {
 			return
 		}
 		message := Message{Type: messageType, Body: string(p)}
+		// do somethine with message here/////////////////////
+		var pMsg gol.GolPlayerMsg
+		err = json.Unmarshal(p, &pMsg)
+
+		if err != nil {
+			log.Println("E", err)
+		}
+		///////////////////////////////////////////////
+		fmt.Printf("GOT PLAYER MSG:%+v\n", pMsg)
+		gol.PlayerAction(&pMsg, *c.Pool.GameHandle)
 		c.Pool.Broadcast <- message
+		c.Pool.UpdateBoard <- (*c.Pool).GameHandle
+
 		fmt.Printf("Message Received: %+v\n", message)
 	}
 }

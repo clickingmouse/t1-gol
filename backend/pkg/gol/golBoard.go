@@ -18,8 +18,8 @@ func CreateNewBoard(r, c int) *[][]Cell {
 func InitBoard(b *[][]Cell) *[][]Cell {
 	for i := range *b {
 		for j := range (*b)[i] {
-			(*b)[i][j].X = i
-			(*b)[i][j].Y = j
+			(*b)[i][j].X = j
+			(*b)[i][j].Y = i
 			// in case we start a new game usage
 			(*b)[i][j].Alive = false
 

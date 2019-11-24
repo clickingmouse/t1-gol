@@ -78,9 +78,9 @@ export default function GolAppPanel() {
   }, []);
 
   //  connect();
-  function send() {
-    console.log("hello");
-    sendMsg("hello");
+  function send(data) {
+    console.log("sending...:", data);
+    sendMsg(data);
   }
 
   //   <GolBoard
@@ -88,6 +88,12 @@ export default function GolAppPanel() {
   //   myColor={state.playerColor}
   // />
   console.log("STATE", state);
+  // {state.messageHistory.game.length >= 1 ? (
+  //   <GolBoard
+  //     gameHistory={state.messageHistory.game}
+  //     myColor={state.playerColor}
+  //   />
+  // ) : null}
 
   return (
     <div>
@@ -100,8 +106,15 @@ export default function GolAppPanel() {
           <Col sm={7}>
             {state.messageHistory.game.length >= 1 ? (
               <GolBoard
-                gameHistory={state.messageHistory.game}
+                boardData={
+                  JSON.parse(
+                    state.messageHistory.game[
+                      state.messageHistory.game.length - 1
+                    ]
+                  ).board
+                }
                 myColor={state.playerColor}
+                send={send}
               />
             ) : null}
           </Col>

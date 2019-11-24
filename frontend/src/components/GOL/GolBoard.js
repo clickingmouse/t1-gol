@@ -1,12 +1,32 @@
 import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import * as d3 from "d3";
 export default function GolBoard(props) {
-  const refElement = useRef(null);
+  //const refElement = useRef(null);
   const boardContainer = useRef(null);
   console.log(props);
   //
   //
   //
+  const handleClick = (x, y) => {
+    console.log("clicked ->");
+
+    console.log("clicked =>", x, y, props.myColor);
+    const move = {
+      msgType: "GOLGAME",
+      x,
+      y,
+      playerColor: props.myColor,
+      generation: 99,
+      playerID: "007",
+      //moveType: "instill",
+      //text: "",
+      payload: "INSTILL"
+    };
+    props.send(JSON.stringify(move));
+    // send click value to server here
+  };
+
   ///////////////////////////////////////////
   //
   //
@@ -14,7 +34,7 @@ export default function GolBoard(props) {
   useEffect(() => {
     //console.log(boardContainer);
     //console.log("----------------->", props.gridData);
-    if (gameData && boardContainer.current) {
+    if (props.boardData && boardContainer.current) {
       //console.log("==================>", props.gridData);
       //console.log("generating board");
       const grid = d3
@@ -27,7 +47,7 @@ export default function GolBoard(props) {
 
       var row = grid
         .selectAll(".row")
-        .data(props.gridData)
+        .data(props.boardData)
         .enter()
         .append("g")
         .attr("class", "row");
@@ -82,13 +102,9 @@ export default function GolBoard(props) {
       grid.exit().remove();
     }
     //}, [props.gridData, boardContainer.current]);
-  }, [gameData, boardContainer.current]);
+  }, [props.boardData, boardContainer.current]);
 
   ////////////////////////
-  let gameData = props.gameHistory[props.gameHistory.length - 1];
-  console.log(typeof gameData);
-  let boardData = JSON.parse(gameData);
-  console.log(typeof boardData);
   ////////////////////////////////
 
   return (
@@ -96,11 +112,9 @@ export default function GolBoard(props) {
       GOL BOARD
       <hr />
       <hr />
-      <svg ref={refElement} />
       <svg
+        style={{ height: "100vh", width: "100vw" }}
         className="board-component"
-        width={600}
-        height={600}
         ref={boardContainer}
       />
     </div>
@@ -108,5 +122,5 @@ export default function GolBoard(props) {
 }
 
 GolBoard.propTypes = {
-  gameHistory: PropTypes.array.isRequired
+  boardData: PropTypes.object.isRequired
 };
