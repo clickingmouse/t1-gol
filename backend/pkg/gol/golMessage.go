@@ -7,6 +7,21 @@ type GolMessage struct {
 	Payload    string `json:"payload"`
 }
 
+type GolTextWrapper struct {
+	Type string     `json:"golMsgType"`
+	Body GolMessage `json:"body"`
+}
+
+type GolGameMessage struct {
+	GolMsgType string     `json:"goMsgType`
+	Payload    GameHandle `json:"payload"`
+}
+
+type GolGameWrapper struct {
+	Type string `json:"golMsgType"`
+	Body string `json:"body"`
+}
+
 func NewMsg(msgType, payload string) *GolMessage {
 	return &GolMessage{GolMsgType: msgType, Payload: payload}
 }
@@ -39,6 +54,19 @@ func PlayerAction(pMsg *GolPlayerMsg, gH GameHandle) string {
 	case "PROPOGATE":
 		fmt.Printf("PROPAGATING ... ... .. .\n")
 		Propagate(gH.Board)
+		break
+	case "RESET":
+		fmt.Printf("RESETING ... ... .. .\n")
+		return "RESET"
+	case "BLINKER":
+		fmt.Printf("LOAD BLINKER ... ... .. .\n")
+		return "BLINKER"
+	case "TOAD":
+		fmt.Printf("LOAD TOAD ... ... .. .\n")
+		return "TOAD"
+	case "BEACON":
+		fmt.Printf("LOAD BEACON ... ... .. .\n")
+		return "BEACON"
 	default:
 		return "nothing"
 	}

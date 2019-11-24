@@ -35,8 +35,13 @@ func (pool *Pool) Start() {
 	// non empty board for frontend testing
 	gol.InsertDummyData(pool.GameHandle.Board)
 	gol.PrintBoard(pool.GameHandle.Board)
+
+	ticker := time.NewTicker(5000 * time.Millisecond)
+
 	for {
 		select {
+		case Timer := <-ticker.C:
+			//fmt.Println("Tick at", Timer)
 		case client := <-pool.Register:
 			pool.Clients[client] = true
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients))
