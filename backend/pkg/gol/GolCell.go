@@ -20,3 +20,18 @@ func (c *Cell) Breed(color string) {
 	c.Alive = true
 	c.ColorHex = color
 }
+
+//SavePreviousLife method
+func (c *Cell) SavePreviousLife() {
+	c.PreviousLife = c.Alive
+}
+
+//RetireCell method
+func (c *Cell) RetireCell() {
+	//	c.Retired = c.Alive
+}
+
+func (c *Cell) KillCell() {
+	c.Alive = false
+	c.ColorHex = "dead"
+}

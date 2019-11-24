@@ -13,7 +13,7 @@ export default function GolBoard(props) {
 
     console.log("clicked =>", x, y, props.myColor);
     const move = {
-      msgType: "GOLGAME",
+      msgType: "GOLMOVE",
       x,
       y,
       playerColor: props.myColor,

@@ -101,7 +101,7 @@ export default function GolAppPanel() {
         GOL MAIN Panel log::{state.messageHistory.allHistory.length}
         <hr />
         <button onClick={send}>Hit</button>
-        <GolInput />
+        <GolInput send={send} />
         <Row>
           <Col sm={7}>
             {state.messageHistory.game.length >= 1 ? (
@@ -123,7 +123,7 @@ export default function GolAppPanel() {
               chatHistory={state.messageHistory.chat}
               header={"Chat Only"}
             />
-            <ChatInput />
+            <ChatInput send={send} />
           </Col>
         </Row>
       </Container>

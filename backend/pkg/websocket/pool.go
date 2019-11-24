@@ -25,7 +25,7 @@ func NewPool() *Pool {
 		Clients:     make(map[*Client]bool),
 		Broadcast:   make(chan Message),
 		UpdateBoard: make(chan *gol.GameHandle),
-		GameHandle:  gol.InitNewGame(10, 5),
+		GameHandle:  gol.InitNewGame(5, 7),
 	}
 }
 

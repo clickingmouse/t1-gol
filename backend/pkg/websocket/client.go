@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"reflect"
 
 	"github.com/clickingmouse/t1/gol/pkg/gol"
 	"github.com/gorilla/websocket"
@@ -32,13 +33,14 @@ func (c *Client) Read() {
 			log.Println(err)
 			return
 		}
+		fmt.Println(reflect.TypeOf(p))
 		message := Message{Type: messageType, Body: string(p)}
 		// do somethine with message here/////////////////////
 		var pMsg gol.GolPlayerMsg
 		err = json.Unmarshal(p, &pMsg)
 
 		if err != nil {
-			log.Println("E", err)
+			log.Println("client.go E", err)
 		}
 		///////////////////////////////////////////////
 		fmt.Printf("GOT PLAYER MSG:%+v\n", pMsg)
@@ -46,6 +48,6 @@ func (c *Client) Read() {
 		c.Pool.Broadcast <- message
 		c.Pool.UpdateBoard <- (*c.Pool).GameHandle
 
-		fmt.Printf("Message Received: %+v\n", message)
+		//fmt.Printf("Message Received: %+v\n", message)
 	}
 }
