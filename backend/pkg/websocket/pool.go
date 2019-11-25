@@ -51,55 +51,29 @@ func (pool *Pool) Start() {
 			// push random color to client
 			//create new message obj
 			var RandomColorMessage = gol.GolMessage{GolMsgType: "playerColor", Payload: gol.GetRandomColor()}
-			nPC, err := json.Marshal(&RandomColorMessage)
+			_, err := json.Marshal(&RandomColorMessage)
 			if err != nil {
 				panic(err)
 			}
-			(*client).Conn.WriteJSON(Message{Type: 1, Body: string(nPC)})
+			//OLD			(*client).Conn.WriteJSON(Message{Type: 1, Body: string(nPC)})
+			(*client).Conn.WriteJSON(gol.GolTextWrapper{Type: 1, Body: RandomColorMessage})
 
 			for client, _ := range pool.Clients {
 				fmt.Println(client)
-				//client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined..."})
-				// test messages
 
-				//var NewUserMessage = GolMessage{GolMsgType: "chat", Payload: "New User Joined"}
-				nUsrMsg, err := json.Marshal(&gol.NewUserMessage)
+				// send new user joined message
+				_, err := json.Marshal(&gol.NewUsrMsg)
 				if err != nil {
 					panic(err)
 				}
-				(*client).Conn.WriteJSON(Message{Type: 1, Body: string(nUsrMsg)})
-				//////////////////////////////////////////////////////////////////
-
-				// nUM, err := json.Marshal(&gol.NewUsrMsg)
-				// if err != nil {
-				// 	panic(err)
-				// }
 
 				(*client).Conn.WriteJSON(gol.NewUsrMsg)
 
-				//client.Conn.WriteJSON(gol.NewUserMessage)
-				//client.Conn.WriteJSON(gol.ChatTestMessage)
-				//client.Conn.WriteJSON(gol.PColorTestMessage)
-				//client.Conn.WriteJSON(gol.GolGameTestMessage)
-
 				// send Game & more importantly, game board
-				pGH, err := json.Marshal(*pool.GameHandle)
+				_, err = json.Marshal(*pool.GameHandle)
 				if err != nil {
 					panic(err)
 				}
-				//gBoardMessage := gol.NewMsg("GOLGAME", string(pGH))
-				//client.Conn.WriteJSON(gBoardMessage)
-				//-(*client).Conn.WriteJSON(Message{Type: 1, Body: string(pGH)})
-
-				//////////////////////////////////////////////////////////////////
-				var boardStatusMsg = gol.GolMessage{GolMsgType: "GOLGAME", Payload: string(pGH)}
-				bStatus, err := json.Marshal(&boardStatusMsg)
-				if err != nil {
-					panic(err)
-				}
-				(*client).Conn.WriteJSON(Message{Type: 1, Body: string(bStatus)})
-
-				//	(*client).Conn.WriteJSON(gol.NewUsrMsg)
 				(*client).Conn.WriteJSON(gol.GolGameWrapper{Type: 11, Body: gol.GolGameMessage{GolMsgType: "GOLGAME", Payload: *pool.GameHandle}})
 
 			}
@@ -123,17 +97,25 @@ func (pool *Pool) Start() {
 		case updateBoard := <-pool.UpdateBoard:
 			fmt.Println("Updating board to all clients in Pool %+v\n", updateBoard)
 			for client, _ := range pool.Clients {
-				pGH, err := json.Marshal(*pool.GameHandle)
-				if err != nil {
-					panic(err)
-				}
-				var boardStatusMsg = gol.GolMessage{GolMsgType: "GOLGAME", Payload: string(pGH)}
-				bStatus, err := json.Marshal(&boardStatusMsg)
-				if err != nil {
-					panic(err)
-				}
-				(*client).Conn.WriteJSON(Message{Type: 1, Body: string(bStatus)})
+				// pGH, err := json.Marshal(*pool.GameHandle)
+				// if err != nil {
+				// 	panic(err)
+				// }
+				// var boardStatusMsg = gol.GolMessage{GolMsgType: "GOLGAME", Payload: string(pGH)}
+				// bStatus, err := json.Marshal(&boardStatusMsg)
+				// if err != nil {
+				// 	panic(err)
+				// }
+				// (*client).Conn.WriteJSON(Message{Type: 1, Body: string(bStatus)})
 				//(*client).Conn.WriteJSON(GolGameWrapper)
+
+				// send Game & more importantly, game board
+				_, err := json.Marshal(*pool.GameHandle)
+				if err != nil {
+					panic(err)
+				}
+				(*client).Conn.WriteJSON(gol.GolGameWrapper{Type: 1, Body: gol.GolGameMessage{GolMsgType: "GOLGAME", Payload: *pool.GameHandle}})
+
 			}
 			break
 		}

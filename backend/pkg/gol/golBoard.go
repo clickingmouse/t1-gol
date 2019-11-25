@@ -52,8 +52,8 @@ func BoardClearAll(b *[][]Cell) {
 
 	for i := range *b {
 		for j := range *b {
-			(*b)[i][j].X = i
-			(*b)[i][j].Y = j
+			(*b)[i][j].X = j
+			(*b)[i][j].Y = i
 			(*b)[i][j].Alive = false
 			(*b)[i][j].PreviousLife = false
 			(*b)[i][j].ColorHex = ""

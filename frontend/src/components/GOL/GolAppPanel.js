@@ -6,21 +6,22 @@ import ChatInput from "./GolChat/ChatInput";
 import { Container, Row, Col } from "react-bootstrap";
 import { connect, sendMsg } from "../../api";
 // dispatch([body.golMsgType, body]);
+//packet.body.payload.golMsgType
 function golMsgReducer(state, [type, body]) {
-  // console.log("REDUCER", type);
-  // console.log("REDUCER-PAYLOAD", payload);
+  console.log("REDUCER", type);
+  console.log("REDUCER-PAYLOAD", body);
   //let p = JSON.parse(payload.body);
-  let p = { msgType: type };
+  //let p = { msgType: type };
   //let p = payload;
-  switch (p.msgType) {
+  switch (type) {
     case "playerColor": {
       return Object.assign({}, state, {
         pending: state.pending,
-        playerColor: body.payload,
+        playerColor: body,
         messageHistory: {
           chat: state.messageHistory.chat,
           game: state.messageHistory.game,
-          allHistory: [...state.messageHistory.allHistory, body.payload]
+          allHistory: [...state.messageHistory.allHistory, body]
         }
       });
     }
@@ -29,9 +30,9 @@ function golMsgReducer(state, [type, body]) {
         pending: state.pending,
         playerColor: state.playerColor,
         messageHistory: {
-          chat: [...state.messageHistory.chat, body.payload],
+          chat: [...state.messageHistory.chat, body],
           game: [...state.messageHistory.game],
-          allHistory: [...state.messageHistory.allHistory, body.payload]
+          allHistory: [...state.messageHistory.allHistory, body]
         }
       });
     case "GOLGAME": {
@@ -41,8 +42,8 @@ function golMsgReducer(state, [type, body]) {
         playerColor: state.playerColor,
         messageHistory: {
           chat: [...state.messageHistory.chat],
-          game: [...state.messageHistory.game, body.payload],
-          allHistory: [...state.messageHistory.allHistory, body.payload]
+          game: [...state.messageHistory.game, body],
+          allHistory: [...state.messageHistory.allHistory, body]
         }
       });
     }
@@ -67,7 +68,7 @@ export default function GolAppPanel() {
       console.log("New Message");
       console.log("received data:", typeof msg.data, msg.data);
       let packet = JSON.parse(msg.data);
-      console.log("packet ->", packet.golMsgType, packet);
+      console.log("packet ->", packet.type, packet);
 
       //body is an object
       console.log("body ->", typeof packet.body, packet.body);
@@ -75,11 +76,11 @@ export default function GolAppPanel() {
 
       //
       //
-      let body = JSON.parse(packet.body);
-      //console.log(typeof payload, payload.golMsgType);
+      //let body = JSON.parse(packet.body);
+      //console.log("++++++++", packet.body.golMsgType);
 
       //      dispatch([packet.golMsgType, packet]);
-      dispatch([body.golMsgType, body]);
+      dispatch([packet.body.golMsgType, packet.body.payload]);
     });
   }, []);
 
@@ -113,11 +114,9 @@ export default function GolAppPanel() {
             {state.messageHistory.game.length >= 1 ? (
               <GolBoard
                 boardData={
-                  JSON.parse(
-                    state.messageHistory.game[
-                      state.messageHistory.game.length - 1
-                    ]
-                  ).board
+                  state.messageHistory.game[
+                    state.messageHistory.game.length - 1
+                  ].board
                 }
                 myColor={state.playerColor}
                 send={send}
