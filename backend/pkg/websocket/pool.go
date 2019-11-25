@@ -9,10 +9,11 @@ import (
 )
 
 type Pool struct {
-	Register    chan *Client
-	Unregister  chan *Client
-	Clients     map[*Client]bool
-	Broadcast   chan Message
+	Register   chan *Client
+	Unregister chan *Client
+	Clients    map[*Client]bool
+	//Broadcast   chan Message
+	Broadcast   chan gol.GolTextWrapper
 	UpdateBoard chan *gol.GameHandle
 	Timer       chan *time.Ticker
 	GameHandle  *gol.GameHandle
@@ -22,10 +23,12 @@ type Pool struct {
 
 func NewPool() *Pool {
 	return &Pool{
-		Register:    make(chan *Client),
-		Unregister:  make(chan *Client),
-		Clients:     make(map[*Client]bool),
-		Broadcast:   make(chan Message),
+		Register:   make(chan *Client),
+		Unregister: make(chan *Client),
+		Clients:    make(map[*Client]bool),
+		//Broadcast:   make(chan Message),
+		Broadcast: make(chan gol.GolTextWrapper),
+
 		UpdateBoard: make(chan *gol.GameHandle),
 		GameHandle:  gol.InitNewGame(6, 6),
 	}

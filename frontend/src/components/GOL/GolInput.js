@@ -18,9 +18,19 @@ export default function GolInput(props) {
   };
   return (
     <div>
-      GOL INPUTS
+      GOL OPTIONS
       <br />
-      <Row>
+      <Row
+        style={{
+          display: "flex",
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          flexWrap: "no-wrap",
+          //margin: "auto",
+          padding: "1rem"
+        }}
+      >
         <Button variant="primary" id="PROPOGATE" onClick={handleClick}>
           PROPOGATE
         </Button>

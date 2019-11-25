@@ -109,14 +109,18 @@ export default function GolBoard(props) {
 
   return (
     <div>
-      GOL BOARD
-      <hr />
-      <hr />
-      <svg
-        style={{ height: "100vh", width: "100vw" }}
-        className="board-component"
-        ref={boardContainer}
-      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center"
+        }}
+      >
+        <svg
+          style={{ height: "100vh", width: "100vw" }}
+          className="board-component"
+          ref={boardContainer}
+        />
+      </div>
     </div>
   );
 }

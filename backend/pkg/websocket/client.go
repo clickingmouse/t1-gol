@@ -35,6 +35,7 @@ func (c *Client) Read() {
 		}
 		fmt.Println(reflect.TypeOf(p))
 		message := Message{Type: messageType, Body: string(p)}
+		_ = message
 		// do somethine with message here/////////////////////
 		var pMsg gol.GolPlayerMsg
 		err = json.Unmarshal(p, &pMsg)
@@ -45,8 +46,10 @@ func (c *Client) Read() {
 		///////////////////////////////////////////////
 		fmt.Printf("GOT PLAYER MSG:%+v\n", pMsg)
 		// pass timer too
-		gol.PlayerAction(&pMsg, *c.Pool.GameHandle, c.Pool.Ticker)
-		c.Pool.Broadcast <- message
+		playerMessage := gol.PlayerAction(&pMsg, *c.Pool.GameHandle, c.Pool.Ticker)
+		//		c.Pool.Broadcast <- message
+		c.Pool.Broadcast <- gol.GolTextWrapper{Type: 1, Body: gol.GolMessage{GolMsgType: "chat", Payload: playerMessage}}
+
 		c.Pool.UpdateBoard <- (*c.Pool).GameHandle
 
 		//fmt.Printf("Message Received: %+v\n", message)

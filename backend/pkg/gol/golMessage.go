@@ -76,7 +76,7 @@ func PlayerAction(pMsg *GolPlayerMsg, gH GameHandle, t *time.Ticker) string {
 	case "PROPOGATE":
 		fmt.Printf("PROPAGATING ... ... .. .\n")
 		Propagate(gH.Board)
-		break
+		return "NEW GENERATION"
 
 	case "BLINKER":
 		fmt.Printf("LOAD BLINKER ... ... .. .\n")
