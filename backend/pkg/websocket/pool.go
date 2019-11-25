@@ -38,7 +38,7 @@ func NewPool() *Pool {
 
 func (pool *Pool) Start() {
 	// non empty board for frontend testing
-	gol.InsertDummyData(pool.GameHandle.Board)
+	//gol.InsertDummyData(pool.GameHandle.Board)
 	//gol.PrintBoard(pool.GameHandle.Board)
 
 	pool.Ticker = time.NewTicker(5000 * time.Millisecond)
