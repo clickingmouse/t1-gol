@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Row } from "react-bootstrap";
 export default function GolInput(props) {
+  console.log(props);
   const handleClick = e => {
     //dosomething
     const pClick = {

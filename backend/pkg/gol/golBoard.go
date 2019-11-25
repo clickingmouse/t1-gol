@@ -48,12 +48,16 @@ func BoardWriteTest(b *[][]Cell, writeBit bool) {
 }
 
 //BoardClearAll to be used as a reset function
-func BoardClearAll(b *[][]Cell, writeBit bool) {
+func BoardClearAll(b *[][]Cell) {
 
 	for i := range *b {
 		for j := range *b {
 			(*b)[i][j].X = i
 			(*b)[i][j].Y = j
+			(*b)[i][j].Alive = false
+			(*b)[i][j].PreviousLife = false
+			(*b)[i][j].ColorHex = ""
+
 			// WRITE 1
 			// (*b)[i][j].ThisGen = "#ffffff"
 			// (*b)[i][j].NextGen = "#ffffff"

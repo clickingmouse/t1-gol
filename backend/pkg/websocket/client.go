@@ -44,7 +44,8 @@ func (c *Client) Read() {
 		}
 		///////////////////////////////////////////////
 		fmt.Printf("GOT PLAYER MSG:%+v\n", pMsg)
-		gol.PlayerAction(&pMsg, *c.Pool.GameHandle)
+		// pass timer too
+		gol.PlayerAction(&pMsg, *c.Pool.GameHandle, c.Pool.Ticker)
 		c.Pool.Broadcast <- message
 		c.Pool.UpdateBoard <- (*c.Pool).GameHandle
 

@@ -1,6 +1,10 @@
 package gol
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+	//"github.com/clickingmouse/t1/gol/pkg/websocket"
+)
 
 type GolMessage struct {
 	GolMsgType string `json:"golMsgType"`
@@ -39,8 +43,12 @@ type GolPlayerMsg struct {
 
 }
 
-func PlayerAction(pMsg *GolPlayerMsg, gH GameHandle) string {
-	fmt.Printf("PlayerAction:: rec'd pMsg: %+v", pMsg)
+////////////////////////////////////////////////////////////////////////
+//
+//
+//
+func PlayerAction(pMsg *GolPlayerMsg, gH GameHandle, t *time.Ticker) string {
+	fmt.Printf("PlayerAction:: rec'd pMsg: %+v\n", pMsg)
 	switch pMsg.MsgType {
 	case "GOLMOVE":
 		fmt.Printf("MAKE [%d][%d]CELL ALIVE!!\n", pMsg.X, pMsg.Y)
@@ -50,22 +58,35 @@ func PlayerAction(pMsg *GolPlayerMsg, gH GameHandle) string {
 	case "GOLCHAT":
 		fmt.Printf("CHAT MESSAGE :%s\n", pMsg.Payload)
 		return pMsg.Payload
+	case "ANNIHILATE":
+		fmt.Printf("RESETTING ... ... .. .\n")
+		BoardClearAll(gH.Board)
+		// reset timer too
+		// seems there are channels issue, will have to look into this in the future
+		//t.Stop()
+		//ticker := time.NewTicker(5000 * time.Millisecond)
+		//t = time.NewTicker(1000 * time.Millisecond)
+		return "RESET"
 
 	case "PROPOGATE":
 		fmt.Printf("PROPAGATING ... ... .. .\n")
 		Propagate(gH.Board)
 		break
-	case "RESET":
-		fmt.Printf("RESETING ... ... .. .\n")
-		return "RESET"
+
 	case "BLINKER":
 		fmt.Printf("LOAD BLINKER ... ... .. .\n")
+		BoardClearAll(gH.Board)
+		PreloadBlinker(gH.Board, pMsg.Color)
 		return "BLINKER"
 	case "TOAD":
 		fmt.Printf("LOAD TOAD ... ... .. .\n")
+		BoardClearAll(gH.Board)
+		PreloadToad(gH.Board, pMsg.Color)
 		return "TOAD"
 	case "BEACON":
 		fmt.Printf("LOAD BEACON ... ... .. .\n")
+		BoardClearAll(gH.Board)
+		PreloadBeacon(gH.Board, pMsg.Color)
 		return "BEACON"
 	default:
 		return "nothing"

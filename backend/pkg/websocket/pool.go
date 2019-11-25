@@ -16,6 +16,8 @@ type Pool struct {
 	UpdateBoard chan *gol.GameHandle
 	Timer       chan *time.Ticker
 	GameHandle  *gol.GameHandle
+	Ticker      *time.Ticker
+	//	Tm          *time
 }
 
 func NewPool() *Pool {
@@ -25,7 +27,7 @@ func NewPool() *Pool {
 		Clients:     make(map[*Client]bool),
 		Broadcast:   make(chan Message),
 		UpdateBoard: make(chan *gol.GameHandle),
-		GameHandle:  gol.InitNewGame(5, 7),
+		GameHandle:  gol.InitNewGame(6, 6),
 	}
 }
 
@@ -34,14 +36,15 @@ func NewPool() *Pool {
 func (pool *Pool) Start() {
 	// non empty board for frontend testing
 	gol.InsertDummyData(pool.GameHandle.Board)
-	gol.PrintBoard(pool.GameHandle.Board)
+	//gol.PrintBoard(pool.GameHandle.Board)
 
-	ticker := time.NewTicker(5000 * time.Millisecond)
-
+	pool.Ticker = time.NewTicker(5000 * time.Millisecond)
+	//pool.Tm.Ticker = time.NewTicker(5000 * time.Millisecond)
 	for {
 		select {
-		case Timer := <-ticker.C:
-			//fmt.Println("Tick at", Timer)
+		case Timer := <-pool.Ticker.C:
+			fmt.Println("Tick at", Timer)
+		// propagate here
 		case client := <-pool.Register:
 			pool.Clients[client] = true
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients))

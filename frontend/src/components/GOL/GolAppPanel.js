@@ -101,7 +101,7 @@ export default function GolAppPanel() {
         GOL MAIN Panel log::{state.messageHistory.allHistory.length}
         <hr />
         <button onClick={send}>Hit</button>
-        <GolInput send={send} />
+        <GolInput send={send} myColor={state.playerColor} />
         <Row>
           <Col sm={7}>
             {state.messageHistory.game.length >= 1 ? (
