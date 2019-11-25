@@ -12,23 +12,28 @@ type GolMessage struct {
 }
 
 type GolTextWrapper struct {
-	Type string     `json:"golMsgType"`
+	Type int        `json:"type"`
 	Body GolMessage `json:"body"`
 }
 
 type GolGameMessage struct {
-	GolMsgType string     `json:"goMsgType`
+	GolMsgType string     `json:"golMsgType"`
 	Payload    GameHandle `json:"payload"`
 }
 
 type GolGameWrapper struct {
-	Type string `json:"golMsgType"`
-	Body string `json:"body"`
+	Type int            `json:"type"`
+	Body GolGameMessage `json:"body"`
 }
 
 func NewMsg(msgType, payload string) *GolMessage {
 	return &GolMessage{GolMsgType: msgType, Payload: payload}
 }
+
+//
+var NewUsrMsg = GolTextWrapper{Type: 1, Body: GolMessage{GolMsgType: "chat", Payload: "A New Gamer Joined!"}}
+
+//var NewUsrMsg = GolTextWrapper{GolMsgType: "chat", Payload: "New User Joined"}
 
 type GolPlayerMsg struct {
 	MsgType    string `json:"msgType"`     //: "GOLGAME",

@@ -64,11 +64,17 @@ export default function GolAppPanel() {
   const [state, dispatch] = useReducer(golMsgReducer, initialMsgState);
   useEffect(() => {
     connect(msg => {
-      //console.log("New Message");
-      //console.log("received data:", typeof msg.data, msg.data);
+      console.log("New Message");
+      console.log("received data:", typeof msg.data, msg.data);
       let packet = JSON.parse(msg.data);
-      //console.log("packet ->", packet.golMsgType, packet);
-      //console.log("body ->", typeof packet.body, packet.body);
+      console.log("packet ->", packet.golMsgType, packet);
+
+      //body is an object
+      console.log("body ->", typeof packet.body, packet.body);
+      console.log("body ->", packet.body.golMsgType, packet.body.payload);
+
+      //
+      //
       let body = JSON.parse(packet.body);
       //console.log(typeof payload, payload.golMsgType);
 

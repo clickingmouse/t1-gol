@@ -68,6 +68,14 @@ func (pool *Pool) Start() {
 					panic(err)
 				}
 				(*client).Conn.WriteJSON(Message{Type: 1, Body: string(nUsrMsg)})
+				//////////////////////////////////////////////////////////////////
+
+				// nUM, err := json.Marshal(&gol.NewUsrMsg)
+				// if err != nil {
+				// 	panic(err)
+				// }
+
+				(*client).Conn.WriteJSON(gol.NewUsrMsg)
 
 				//client.Conn.WriteJSON(gol.NewUserMessage)
 				//client.Conn.WriteJSON(gol.ChatTestMessage)
@@ -90,6 +98,9 @@ func (pool *Pool) Start() {
 					panic(err)
 				}
 				(*client).Conn.WriteJSON(Message{Type: 1, Body: string(bStatus)})
+
+				//	(*client).Conn.WriteJSON(gol.NewUsrMsg)
+				(*client).Conn.WriteJSON(gol.GolGameWrapper{Type: 11, Body: gol.GolGameMessage{GolMsgType: "GOLGAME", Payload: *pool.GameHandle}})
 
 			}
 			break
@@ -122,6 +133,7 @@ func (pool *Pool) Start() {
 					panic(err)
 				}
 				(*client).Conn.WriteJSON(Message{Type: 1, Body: string(bStatus)})
+				//(*client).Conn.WriteJSON(GolGameWrapper)
 			}
 			break
 		}
