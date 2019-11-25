@@ -47,7 +47,19 @@ func (pool *Pool) Start() {
 		select {
 		case Timer := <-pool.Ticker.C:
 			fmt.Println("Tick at", Timer)
-		// propagate here
+			gol.Propagate(pool.GameHandle.Board)
+			for client, _ := range pool.Clients {
+
+				_, err := json.Marshal(*pool.GameHandle)
+				if err != nil {
+					panic(err)
+				}
+				(*client).Conn.WriteJSON(gol.GolGameWrapper{Type: 1, Body: gol.GolGameMessage{GolMsgType: "GOLGAME", Payload: *pool.GameHandle}})
+
+			}
+			// propagate here & broadcast
+			//pool.UpdateBoard <- pool.GameHandle
+			break
 		case client := <-pool.Register:
 			pool.Clients[client] = true
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients))
@@ -100,19 +112,7 @@ func (pool *Pool) Start() {
 		case updateBoard := <-pool.UpdateBoard:
 			fmt.Println("Updating board to all clients in Pool %+v\n", updateBoard)
 			for client, _ := range pool.Clients {
-				// pGH, err := json.Marshal(*pool.GameHandle)
-				// if err != nil {
-				// 	panic(err)
-				// }
-				// var boardStatusMsg = gol.GolMessage{GolMsgType: "GOLGAME", Payload: string(pGH)}
-				// bStatus, err := json.Marshal(&boardStatusMsg)
-				// if err != nil {
-				// 	panic(err)
-				// }
-				// (*client).Conn.WriteJSON(Message{Type: 1, Body: string(bStatus)})
-				//(*client).Conn.WriteJSON(GolGameWrapper)
 
-				// send Game & more importantly, game board
 				_, err := json.Marshal(*pool.GameHandle)
 				if err != nil {
 					panic(err)

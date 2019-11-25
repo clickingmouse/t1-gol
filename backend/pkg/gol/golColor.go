@@ -1,8 +1,6 @@
 package gol
 
 import (
-	"fmt"
-
 	"github.com/lucasb-eyer/go-colorful"
 )
 
@@ -13,12 +11,6 @@ func GetRandomColor() string {
 
 //GetAverageColor of 3 colors with simple average
 func GetAverageColor(parents *[]string) string {
-	fmt.Println("***********************************************")
-	fmt.Printf("calculating average of color %+v\n", *parents)
-	//r, g, b := colorful.Hex("#FF0000").FastLinearRgb()
-
-	//////////////////////////////////////////////////
-	// test with red/blue
 
 	c1, _ := colorful.Hex((*parents)[0])
 	c2, _ := colorful.Hex((*parents)[1])
@@ -31,6 +23,5 @@ func GetAverageColor(parents *[]string) string {
 
 	//cRedHex := "#FF0000"
 	//cRedHex
-	fmt.Printf("**%+v\n", cNew.Hex())
 	return cNew.Hex()
 }
