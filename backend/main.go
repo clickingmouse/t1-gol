@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/clickingmouse/t1/gol/pkg/websocket"
 )
@@ -41,10 +43,21 @@ func setupRoutes() {
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(pool, w, r)
 	})
+
+	http.Handle("/", http.FileServer(http.Dir("./build")))
+
+	dir, _ := os.Getwd()
+	// fs := http.FileServer(http.Dir(dir))
+	// http.Handle("/", fs)
+	// http.HandleFunc("/gol/", func(w http.ResponseWriter, r *http.Request) {
+	// 	http.ServeFile(w, r, "./build/index.html")
+	// })
+	log.Println("Serving " + dir)
+
 }
 
 func main() {
 	fmt.Println("Distributed T1 - GOL v0.01")
 	setupRoutes()
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
