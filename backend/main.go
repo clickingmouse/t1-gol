@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
+"os"
 	"github.com/clickingmouse/t1/gol/pkg/websocket"
 )
 
