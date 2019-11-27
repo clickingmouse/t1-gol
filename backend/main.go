@@ -58,5 +58,13 @@ func setupRoutes() {
 func main() {
 	fmt.Println("Distributed T1 - GOL v0.01")
 	setupRoutes()
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	addr, err := determineListenAddress()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Listening on %s...\n", addr)
+	if err := http.ListenAndServe(addr, nil); err != nil {
+		panic(err)
+	}
+	//log.Fatal(http.ListenAndServe(":8080", nil))
 }
