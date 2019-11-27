@@ -5,7 +5,7 @@ WORKDIR /app/backend
 COPY ./backend/go.mod ./backend/go.sum ./
 RUN go mod download
 
-RUN CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags "-w" -a -o /main .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-w" -a -o /main .
 
 
 # Build the React application
@@ -25,7 +25,10 @@ RUN apk --no-cache add ca-certificates
 COPY --from=builder /main ./
 COPY --from=node_builder /build ./web
 RUN pwd
-RUN ls-la
+RUN ls -la
+RUN ls web
+
 RUN chmod +x ./main
 EXPOSE 8080
 CMD ./main
+#ENTRYPOINT ["./main, "-D", "FOREGROUND"]
