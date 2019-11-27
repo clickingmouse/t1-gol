@@ -125,8 +125,9 @@ export default function GolAppPanel() {
           <Col sm={5}>
             <ChatHistory
               chatHistory={state.messageHistory.chat}
-              header={"Chat Only"}
+              header={"GOL Messages"}
             />
+
             <ChatInput send={send} />
           </Col>
         </Row>

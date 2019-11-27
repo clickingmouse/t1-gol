@@ -1,7 +1,7 @@
 //var socket = new WebSocket("ws://localhost:8080/ws");
 
 var HOST = window.location.origin.replace(/^http/, "ws");
-console.log(HOST);
+//console.log(HOST);
 
 var socket = new WebSocket(HOST + "/ws");
 

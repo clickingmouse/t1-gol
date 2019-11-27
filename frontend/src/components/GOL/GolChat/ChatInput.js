@@ -37,7 +37,12 @@ export default function ChatInput(props) {
   return (
     <div>
       <div className="ChatInput">
-        <input onKeyDown={send} onChange={handleChange} value={input} />
+        <input
+          onKeyDown={send}
+          onChange={handleChange}
+          value={input}
+          style={{ width: "100%" }}
+        />
       </div>
     </div>
   );
