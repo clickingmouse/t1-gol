@@ -36,6 +36,10 @@ Also, on initial connection, the backend will send out a random color to the cli
 The client will branch out the messages to either color/chat/goboard and update the corresponding state.
 The gameboard was done with d3, as I thought i might be more better to add functionalities on top in the future.
 
+when  a cell is clicked, the cliend sends the the coordinates of the cell clicked along with the player color to the backend, and the backend updates the board, and sends the updated board to each connection in the pool.
+(in the beginning i set this front end to be blue, and it appears to show this lag on heroku, but it looks passable as an indicator of cell clicked)
+
+
 After Thoughts
 the game starts up the timer once its loaded. maybe should consider starting the timer after getting the first connection, but this will have to keep track of player connections which, as stated above may open the pandora's box.
 
