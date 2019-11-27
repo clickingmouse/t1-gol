@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/clickingmouse/t1/gol/pkg/websocket"
 )
@@ -44,15 +43,15 @@ func setupRoutes() {
 		serveWs(pool, w, r)
 	})
 
-	http.Handle("/", http.FileServer(http.Dir("./build")))
+	http.Handle("/", http.FileServer(http.Dir("./web")))
 
-	dir, _ := os.Getwd()
+	//dir, _ := os.Getwd()
 	// fs := http.FileServer(http.Dir(dir))
 	// http.Handle("/", fs)
 	// http.HandleFunc("/gol/", func(w http.ResponseWriter, r *http.Request) {
 	// 	http.ServeFile(w, r, "./build/index.html")
 	// })
-	log.Println("Serving " + dir)
+	//log.Println("Serving " + dir)
 
 }
 
