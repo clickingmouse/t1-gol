@@ -55,6 +55,16 @@ func setupRoutes() {
 
 }
 
+func determineListenAddress() (string, error) {
+	port := os.Getenv("PORT")
+	if port == "" {
+		return ":8080", nil
+
+		//return "", fmt.Errorf("$PORT not set")
+	}
+	return ":" + port, nil
+}
+
 func main() {
 	fmt.Println("Distributed T1 - GOL v0.01")
 	setupRoutes()
